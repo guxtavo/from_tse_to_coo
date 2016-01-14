@@ -6,7 +6,7 @@
 cgroup_name=$(basename $(mktemp -d))
 blkio_path=/sys/fs/cgroup/blkio
 command=${*:2}
-mm_ids="253:1" # fedora-root
+mm_ids="253:1" # find your major and minor with # dmsetup info
 bw=$1
 
 sudo mkdir ${blkio_path}/${cgroup_name}
