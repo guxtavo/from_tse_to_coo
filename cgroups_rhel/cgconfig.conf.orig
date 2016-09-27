@@ -6,7 +6,7 @@ mount {
 
 group gss {
 	cpu {
-		cpu.cfs_quota_us = CPU_SHARES;
+		cpu.cfs_quota_us = CAPED_CPU;
 		cpu.cfs_period_us = 100000;
 	}
 	memory {
