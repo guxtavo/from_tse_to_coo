@@ -1,9 +1,12 @@
 # https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html-single/Resource_Management_Guide/#Finding_a_Process
 # https://www.digitalocean.com/community/tutorials/how-to-limit-resources-using-cgroups-on-centos-6
 
+# This script works with RHEL6 and RHEL7
+
 # Using cfs.quotas will limit the total CPU usage of your only process
 # to a certain limit, and will not allow your application to go beyond
 # that as with CPU.SHARES. 
+
 
 # Basic configuration, please change according to your needs:
 
@@ -31,11 +34,17 @@ TOTAL_MEM=$(free -m | head -2 | tail -1 | awk '{print $2}')
 CAPED_MEM=$(( ($TOTAL_MEM*$CAP_MEM_PERC) / 100 ))
 
 
+
 # change defaults in cgrules.conf.orig and cgconfig.conf.orig
 
 sed -e "s/CAPED_CPU/$CAPED_CPU/g" \
     -e "s/CAPED_MEM/$CAPED_MEM/g" \
     cgconfig.conf.orig > /etc/cgconfig.conf
+
+if $(uname -a | grep el7)
+  then
+   sed -i -e '1,6d' /etc/cgconfig.conf
+fi
 
 sed -e "s/USER/$CAP_USER/g" \
     cgrules.conf.orig > /etc/cgrules.conf
