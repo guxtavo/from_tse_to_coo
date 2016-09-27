@@ -44,7 +44,7 @@ sed -e "s/CAPED_CPU/$CAPED_CPU/g" \
 if uname -a | grep el7
   then
    sed -i -e '1,6d' /etc/cgconfig.conf
-   CGROUP_PATH=/sys/fs/cgroup/blkio
+   CGROUP_PATH=/sys/fs/cgroup
 fi
 
 sed -e "s/USER/$CAP_USER/g" \
