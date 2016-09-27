@@ -44,7 +44,10 @@ sed -e "s/CAPED_CPU/$CAPED_CPU/g" \
 if $(uname -a | grep el7)
   then
    sed -i -e '1,6d' /etc/cgconfig.conf
+   CGROUP_PATH=/sys/fs/cgroup/blkio
 fi
+
+CGROUP_PATH=/cgroup
 
 sed -e "s/USER/$CAP_USER/g" \
     cgrules.conf.orig > /etc/cgrules.conf
@@ -54,8 +57,8 @@ service cgred restart
 
 while read -r line
 do
-echo "$line       $DISK_WTPS" >> /cgroup/blkio/gss/blkio.throttle.write_iops_device
-echo "$line       $DISK_RTPS" >> /cgroup/blkio/gss/blkio.throttle.read_iops_device
+echo "$line       $DISK_WTPS" >> $CGROUP_PATH/blkio/gss/blkio.throttle.write_iops_device
+echo "$line       $DISK_RTPS" >> $CGROUP_PATH/blkio/gss/blkio.throttle.read_iops_device
 done < <(dmsetup info -c | awk '{print $2":"$3}' | grep -v Maj)
 
 echo "######################"
