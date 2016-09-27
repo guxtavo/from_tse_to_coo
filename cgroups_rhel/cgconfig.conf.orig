@@ -1,0 +1,18 @@
+mount {
+        cpu     = /cgroup/cpu;
+        memory  = /cgroup/memory;
+        blkio   = /cgroup/blkio;
+}
+
+group gss {
+	cpu {
+		cpu.cfs_quota_us = CPU_SHARES;
+		cpu.cfs_period_us = 100000;
+	}
+	memory {
+		memory.limit_in_bytes = CAPED_MEMm;
+	}
+
+	blkio {
+	}
+}
