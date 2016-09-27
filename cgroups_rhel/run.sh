@@ -33,7 +33,7 @@ DEVICE_LIST=$(dmsetup info -c | awk '{print $2":"$3}' | grep -v Maj)
 TOTAL_MEM=$(free -m | head -2 | tail -1 | awk '{print $2}')
 CAPED_MEM=$(( ($TOTAL_MEM*$CAP_MEM_PERC) / 100 ))
 
-
+CGROUP_PATH=/cgroup
 
 # change defaults in cgrules.conf.orig and cgconfig.conf.orig
 
@@ -41,13 +41,11 @@ sed -e "s/CAPED_CPU/$CAPED_CPU/g" \
     -e "s/CAPED_MEM/$CAPED_MEM/g" \
     cgconfig.conf.orig > /etc/cgconfig.conf
 
-if $(uname -a | grep el7)
+if uname -a | grep el7
   then
    sed -i -e '1,6d' /etc/cgconfig.conf
    CGROUP_PATH=/sys/fs/cgroup/blkio
 fi
-
-CGROUP_PATH=/cgroup
 
 sed -e "s/USER/$CAP_USER/g" \
     cgrules.conf.orig > /etc/cgrules.conf
